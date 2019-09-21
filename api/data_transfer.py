@@ -1,4 +1,3 @@
-import torch
 import json
 
 def initialize_matrix(matrix):
