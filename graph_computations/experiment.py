@@ -29,14 +29,14 @@ class Experiment:
 
         # state then agent type
         self.transmission_probs = {
-            -1: {-1: 0.5, 0: 0.3, 1: 0.2},
+            -1: {-1: 0.6, 0: 0.3, 1: 0.1},
             0: {-1: 0.0, 0: 0.0, 1: 0.0},
-            1: {-1: 0.2, 0: 0.3, 1: 0.5},
+            1: {-1: 0.1, 0: 0.3, 1: 0.6},
         }
 
         # will store a history
         self.state_history = [self.states]
-        self.transmission_history = [np.zeros((N,N))]
+        self.transmission_history = [np.zeros((N, N))]
 
     def set_transmission_probs(self, transmission_dict):
         """ sets a new probability dict for transmission_dict """
@@ -55,7 +55,7 @@ class Experiment:
                 j_update = self.states[i]
                 j_same = self.states[j]
 
-                if random[i][j] < prob_new_state:
+                if random[i][j] > prob_new_state:
                     transmission_matrix[i][j] = j_update
                 else:
                     transmission_matrix[i][j] = j_same
@@ -63,8 +63,10 @@ class Experiment:
         for j in range(N):
             identity = sum(transmission_matrix[:][j])
             if identity > 0:
+                print("change")
                 new_states[j] = 1
             elif identity < 0:
+                print("change")
                 new_states[j] = -1
             else:
                 new_states[j] = 0
@@ -80,6 +82,10 @@ class Experiment:
             self.states = new_states
         return self.state_history, self.transmission_history
 
+    def get_edge_weight_history(self):
+        N = self.N
+        for i in range(N):
+
     def get_hist(self, steps):
         trans_hist = self.run(steps)[1]
         return trans_hist
@@ -87,10 +93,6 @@ class Experiment:
     def get_initial(self):
         return df.initialize_matrix(self.edges)
 
-
-
-
-
 experiment = Experiment(100)
 print(experiment.agents)
-print(experiment.run(10)[0])
+print(experiment.run(10)[0][0] == experiment.run(10)[0][-1])
