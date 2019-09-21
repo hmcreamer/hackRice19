@@ -8,8 +8,7 @@ er = nx.erdos_renyi_graph(N, 0.25)
 edges = np.array(nx.adjacency_matrix(er).todense())
 print(f'Random Graph: \n{edges}\n')
 
-# Give each node an bias - fake, neutral, not fake
-# Give each node an intial state - what kind of info do they carry
+
 node_bias = [np.random.choice([-1, 0, 1]) for _ in range(N)]
 node_state = [np.random.choice([-1, 0, 1]) for _ in range(N)]
 
