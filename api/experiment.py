@@ -38,6 +38,9 @@ def send_data_for_tick(matrix):
 
 def process_list_tick_matrices(list):
     all_paths = [send_data_for_tick(matrix) for matrix in list]
+    file_path = "../api/tickdata.json"
+    with open(file_path, "w") as json_file:
+        json.dump(all_paths, json_file)
     return json.dumps(all_paths)
 
 def send_node_change_data(nodes):
