@@ -13,6 +13,7 @@ def index():
 def start_exp():
     experiment = experiments.Experiment(10)
     initial = experiment.get_initial()
+    print(initial)
     return render_template('test.html', graph=initial)
 
 def run_exp(experiment):
