@@ -9,6 +9,7 @@ app = Flask(__name__, template_folder="templates")
 def index():
     return render_template('index.html', message="Here is a message")
 
+@app.route('/test')
 def start_exp():
     experiment = experiments.Experiment(10)
     initial = experiment.get_initial()
