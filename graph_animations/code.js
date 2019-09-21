@@ -6,10 +6,15 @@ var cy = cytoscape({
 
   style: cytoscape.stylesheet()
     .selector('node')
-      .style({
-        'content': 'data(id)'
-      })
-    .selector('edge')
+    .style({
+      'content': 'data(id)'
+    })
+    .selector('.highlighted-node')
+    .style({
+      'content': 'data(id)',
+      'background-color': '#61bffc',
+    })
+  .selector('edge')
       .style({
         'curve-style': 'bezier',
         'target-arrow-shape': 'triangle',
@@ -33,18 +38,23 @@ var cy = cytoscape({
         { data: { id: 'c' } },
         { data: { id: 'd' } },
         { data: { id: 'e' } },
-        { data: { id: 'hi' } }
+        { data: { id: 'g' } },
+        { data: { id: 'h' } },
+        { data: { id: 'i' } },
+        { data: { id: 'j' } },
       ],
 
       edges: [
-        { data: { id: 'a"e', weight: 1, source: 'a', target: 'e' } },
+        { data: { id: 'ae', weight: 1, source: 'a', target: 'e' } },
         { data: { id: 'ab', weight: 3, source: 'a', target: 'b' } },
         { data: { id: 'be', weight: 4, source: 'b', target: 'e' } },
         { data: { id: 'bc', weight: 5, source: 'b', target: 'c' } },
-        { data: { id: 'ce', weight: 6, source: 'c', target: 'e' } },
+        { data: { id: 'ec', weight: 6, source: 'e', target: 'c' } },
         { data: { id: 'cd', weight: 2, source: 'c', target: 'd' } },
-        { data: { id: 'de', weight: 7, source: 'd', target: 'e' } },
-        { data: { id: 'ahi', weight: 7, source: 'a', target: 'hi' } },
+        { data: { id: 'dh', weight: 7, source: 'd', target: 'h' } },
+        { data: { id: 'di', weight: 7, source: 'd', target: 'i' } },
+        { data: { id: 'dj', weight: 7, source: 'd', target: 'j' } },
+        { data: { id: 'dg', weight: 7, source: 'd', target: 'g' } }
       ]
     },
 
@@ -56,19 +66,71 @@ var cy = cytoscape({
   }
 });
 
-var bfs = cy.elements().bfs('#a', function(){}, true);
-console.log(bfs.path)
+// Highlight an edge (highlights target nodes and un-highlights source nodes)
+function highlightEdge(id) {
+  let edge = cy.edges().filter(x => x.data('id') == id)
+  edge.target().addClass("highlighted-node");
+  edge.addClass('highlighted');
+}
 
+function unHighlightEdge(id) {
+  let edge = cy.edges().filter(x => x.data('id') == id)
+  edge.removeClass('highlighted');
+  edge.target().removeClass("highlighted-node");
+}
+
+function highlightTick(i) {
+  for (e = 0; e < ticks[i].length; e++) {
+    highlightEdge(ticks[i][e]);
+  }
+}
+
+function unHighlightTick(i) {
+  for (e = 0; e < ticks[i].length; e++) {
+    unHighlightEdge(ticks[i][e]);
+  }
+}
+
+// Holds the current tick
 var i = 0;
-var highlightNextEle = function(){
-  if( i < bfs.path.length ){
-    console.log(bfs.path[i])
-    bfs.path[i].addClass('highlighted');
 
+var ticks = [
+  [
+    "ae",
+    "ab",
+  ],
+  [
+    "bc",
+    "be",
+    "ec",
+  ],
+  [
+    "cd",
+  ],
+  [
+    "di",
+    "dj",
+    "dg",
+    "dh",
+  ],
+]
+
+// Performs highlights at each tick
+var nextHighlight = function(){
+  if (i < ticks.length) {
+    console.log(ticks[i]);
+    highlightTick(i);
+    if (i > 0) {
+      unHighlightTick(i - 1);
+    }
     i++;
-    setTimeout(highlightNextEle, 1000);
+    // Kick off next highlight
+    setTimeout(nextHighlight, 1000);
+  } else {
+    unHighlightTick(ticks.length - 1);
   }
 };
 
-// kick off first highlight
-highlightNextEle();
+
+// Kick off first highlight
+nextHighlight();
