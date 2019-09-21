@@ -21,6 +21,20 @@ prob_dict = {
 }
 
 
+def create_unique_keys(prob_dict):
+    """ Returns a dictionary that has unique keys used for vectoring matrix update with probabilities """
+    unique_prob_dict = {}
+    unique_mod = .1
+    for k,v in prob_dict.items():
+        for vk, vv in v.items():
+            unique_prob_dict[k * (vk + unique_mod)] = vv
+        unique_mod *= .1
+    return unique_prob_dict
+
+print(create_unique_keys(prob_dict))
+print(len(create_unique_keys(prob_dict).keys()))
+
+
 def update(n_state, n_bias):
     """ Returns state at next time step """
     random = np.random.rand(N, N)
