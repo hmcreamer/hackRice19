@@ -31,5 +31,16 @@ def send_data_for_tick(matrix):
                 new_path.append({key : "red"})
             elif matrix[i][j] == -1:
                 key = str(i) + str(j)
-                new_path.append({key : "blue"})
+                new_path.append([key, "blue"])
     return json.dumps(new_path)
+
+def send_node_change_data(nodes):
+    node_colors = []
+    for node in nodes:
+        if node == 1:
+            node_colors.append("red")
+        elif node == 1:
+            node_colors.append("blue")
+        else:
+            node_colors.append("black")
+    return node_colors
