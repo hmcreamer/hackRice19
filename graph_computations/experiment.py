@@ -35,8 +35,9 @@ class Experiment:
         }
 
         # will store a history
-        self.state_history = [self.states]
-        self.transmission_history = [np.zeros((N, N))]
+        self.state_history = []
+        self.transmission_history = []
+        self.edge_weight_history = []
 
     def set_transmission_probs(self, transmission_dict):
         """ sets a new probability dict for transmission_dict """
@@ -48,6 +49,7 @@ class Experiment:
         random = np.random.rand(N, N)
         new_states = np.zeros(N)
         transmission_matrix = np.zeros((N,N))
+        edge_weight_matrix = np.zeros((N,N))
 
         for i in range(N):
             for j in range(N):
@@ -60,6 +62,8 @@ class Experiment:
                 else:
                     transmission_matrix[i][j] = j_same
 
+                edge_weight_matrix[i][j] = prob_new_state
+
         for j in range(N):
             identity = sum(transmission_matrix[:][j])
             if identity > 0:
@@ -71,20 +75,17 @@ class Experiment:
             else:
                 new_states[j] = 0
 
-        return new_states, transmission_matrix
+        return new_states, transmission_matrix, edge_weight_matrix
 
     def run(self, steps):
-        for i in range(steps - 1):
-            new_states, transmission_matrix = self.update()
+        for i in range(steps):
+            new_states, transmission_matrix, edge_weight_matrix = self.update()
 
-            self.state_history.append(new_states)
+            self.state_history.append(self.states)
             self.transmission_history.append(transmission_matrix)
-            self.states = new_states
-        return self.state_history, self.transmission_history
-
-    def get_edge_weight_history(self):
-        N = self.N
-        for i in range(N):
+            self.edge_weight_history.append(edge_weight_matrix)
+            self.states = new_states.copy()
+        return self.state_history, self.transmission_history, self.edge_weight_history
 
     def get_hist(self, steps):
         trans_hist = self.run(steps)[1]
@@ -93,6 +94,6 @@ class Experiment:
     def get_initial(self):
         return df.initialize_matrix(self.edges)
 
-experiment = Experiment(100)
-print(experiment.agents)
-print(experiment.run(10)[0][0] == experiment.run(10)[0][-1])
+
+experiment = Experiment(10)
+print(experiment.run(2))
