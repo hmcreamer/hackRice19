@@ -3,7 +3,7 @@ import api.data_transfer as df
 import networkx as nx
 import numpy as np
 import copy
-import simplejson
+import json
 
 
 class Experiment:
@@ -96,6 +96,9 @@ class Experiment:
     def get_initial(self):
         nodes, edges = df.initialize_matrix(self.edges)
         graph_dict = {'nodes': nodes, 'edges': edges}
+        file_path = "../api"
+        with open(file_path, "w") as json_file:
+            json.dump(graph_dict, json_file)
         return simplejson.dumps(graph_dict)
 
 #experiment = Experiment(10)
