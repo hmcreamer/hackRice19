@@ -63,7 +63,7 @@ class Experiment:
                     transmission_matrix[i][j] = j_same
 
                 edge_weight_matrix[i][j] = prob_new_state
-
+        print(transmission_matrix)
         for j in range(N):
             identity = sum(transmission_matrix[:][j])
             if identity > 0:
@@ -75,6 +75,7 @@ class Experiment:
             else:
                 new_states[j] = 0
 
+        print(new_states)
         return new_states, transmission_matrix, edge_weight_matrix
 
     def run(self, steps):
@@ -96,4 +97,4 @@ class Experiment:
 
 
 experiment = Experiment(10)
-print(experiment.run(2))
+print(experiment.run(1)[0])
