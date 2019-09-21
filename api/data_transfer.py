@@ -34,6 +34,10 @@ def send_data_for_tick(matrix):
                 new_path.append([key, "blue"])
     return json.dumps(new_path)
 
+def process_list_tick_matrices(list):
+    all_paths = [send_data_for_tick(matrix) for matrix in list]
+    return json.dumps(all_paths)
+
 def send_node_change_data(nodes):
     node_colors = []
     for node in nodes:

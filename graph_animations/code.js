@@ -30,6 +30,14 @@ var cy = cytoscape({
         'transition-property': 'background-color, line-color, target-arrow-color',
         'transition-duration': '0.5s'
       }),
+      .selector('.highlighted-red')
+      .style({
+        'background-color': '#FF0000',
+        'line-color': '#FF0000',
+        'target-arrow-color': '#FF0000',
+        'transition-property': 'background-color, line-color, target-arrow-color',
+        'transition-duration': '0.5s'
+      }),
 
   elements: {
       nodes: [
@@ -67,10 +75,15 @@ var cy = cytoscape({
 });
 
 // Highlight an edge (highlights target nodes and un-highlights source nodes)
-function highlightEdge(id) {
+function highlightEdge(id, color) {
   let edge = cy.edges().filter(x => x.data('id') == id)
-  edge.target().addClass("highlighted-node");
-  edge.addClass('highlighted');
+  if (color == "red") {
+    edge.addClass('highlighted-red');
+  } else {
+    edge.target().addClass("highlighted-node");
+    edge.addClass('highlighted');
+  }
+
 }
 
 function unHighlightEdge(id) {
@@ -81,7 +94,7 @@ function unHighlightEdge(id) {
 
 function highlightTick(i) {
   for (e = 0; e < ticks[i].length; e++) {
-    highlightEdge(ticks[i][e]);
+    highlightEdge(ticks[i][e][0], ticks[i][e][1]);
   }
 }
 
@@ -96,7 +109,7 @@ var i = 0;
 
 var ticks = [
   [
-    "ae",
+    {"ae" : "red"},
     "ab",
   ],
   [

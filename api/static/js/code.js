@@ -29,6 +29,15 @@ var cy = cytoscape({
         'target-arrow-color': '#61bffc',
         'transition-property': 'background-color, line-color, target-arrow-color',
         'transition-duration': '0.5s'
+      })
+
+      .selector('.highlighted-red')
+          .style({
+            'background-color': '#FF0000',
+            'line-color': '#FF0000',
+            'target-arrow-color': '#FF0000',
+            'transition-property': 'background-color, line-color, target-arrow-color',
+            'transition-duration': '0.5s'
       }),
 
   elements: {
@@ -67,58 +76,67 @@ var cy = cytoscape({
 });
 
 // Highlight an edge (highlights target nodes and un-highlights source nodes)
-function highlightEdge(id) {
+function highlightEdge(id, color) {
   let edge = cy.edges().filter(x => x.data('id') == id)
-  edge.target().addClass("highlighted-node");
-  edge.addClass('highlighted');
+  if (color == "red") {
+    edge.addClass('highlighted-red');
+  } else {
+    edge.target().addClass("highlighted-node");
+    edge.addClass('highlighted');
+  }
+
 }
 
-function unHighlightEdge(id) {
+function unHighlightEdge(id, color) {
   let edge = cy.edges().filter(x => x.data('id') == id)
-  edge.removeClass('highlighted');
+  if (color == "red") {
+    edge.removeClass('highlighted-red')
+  } else {
+    edge.removeClass('highlighted');
+  }
   edge.target().removeClass("highlighted-node");
 }
 
 function highlightTick(i) {
-  for (e = 0; e < ticks[i].length; e++) {
-    highlightEdge(ticks[i][e]);
+  for (e = 0; e < tick_edges[i].length; e++) {
+    highlightEdge(tick_edges[i][e][0], tick_edges[i][e][1]);
   }
 }
 
 function unHighlightTick(i) {
-  for (e = 0; e < ticks[i].length; e++) {
-    unHighlightEdge(ticks[i][e]);
+  for (e = 0; e < tick_edges[i].length; e++) {
+    unHighlightEdge(tick_edges[i][e][0], tick_edges[i][e][1]);
   }
 }
 
 // Holds the current tick
 var i = 0;
 
-var ticks = [
+var tick_edges = [
   [
-    "ae",
-    "ab",
+    ["ae", "red"],
+    ["ab", "blue"],
   ],
   [
-    "bc",
-    "be",
-    "ec",
+    ["bc", "red"],
+    ["be", "blue"],
+    ["ec", "red"],
   ],
   [
-    "cd",
+    ["cd", "red"],
   ],
   [
-    "di",
-    "dj",
-    "dg",
-    "dh",
+    ["di", "red"],
+    ["dj", "red"],
+    ["dg", "red"],
+    ["dh", "red"],
   ],
 ]
 
 // Performs highlights at each tick
 var nextHighlight = function(){
-  if (i < ticks.length) {
-    console.log(ticks[i]);
+  if (i < tick_edges.length) {
+    console.log(tick_edges[i]);
     highlightTick(i);
     if (i > 0) {
       unHighlightTick(i - 1);
@@ -127,7 +145,7 @@ var nextHighlight = function(){
     // Kick off next highlight
     setTimeout(nextHighlight, 1000);
   } else {
-    unHighlightTick(ticks.length - 1);
+    unHighlightTick(tick_edges.length - 1);
   }
 };
 
