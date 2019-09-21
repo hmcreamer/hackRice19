@@ -140,7 +140,7 @@ class Experiment:
 
     def get_hist(self, steps):
         trans_hist = self.run(steps)[1]
-        return trans_hist
+        return process_list_tick_matrices(trans_hist)
 
     def get_initial(self):
         nodes, edges = initialize_matrix(self.edges)
@@ -150,6 +150,7 @@ class Experiment:
             json.dump(graph_dict, json_file)
         return json.dumps(graph_dict)
 
-#experiment = Experiment(10)
-#print(experiment.states)
-#print(experiment.run(2)[0])
+experiment = Experiment(10)
+print(experiment.states)
+print(experiment.run(2)[0])
+experiment.get_hist()
