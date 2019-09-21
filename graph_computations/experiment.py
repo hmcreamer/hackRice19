@@ -71,9 +71,7 @@ class Experiment:
 
         return new_states, transmission_matrix
 
-    # look at next
     def run(self, steps):
-        df.initialize_matrix(self.edges)
         for i in range(steps - 1):
             new_states, transmission_matrix = self.update()
 
@@ -81,6 +79,16 @@ class Experiment:
             self.transmission_history.append(transmission_matrix)
             self.states = new_states
         return self.state_history, self.transmission_history
+
+    def get_hist(self, steps):
+        trans_hist = self.run(steps)[1]
+        return trans_hist
+
+    def get_initial(self):
+        return df.initialize_matrix(self.edges)
+
+
+
 
 
 experiment = Experiment(100)
