@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template
-import graph_computations.experiment as experiments
+from graph_computations import experiment as experiments
 
 app = Flask(__name__, template_folder="templates")
 

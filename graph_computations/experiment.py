@@ -29,14 +29,15 @@ class Experiment:
 
         # state then agent type
         self.transmission_probs = {
-            -1: {-1: 0.5, 0: 0.3, 1: 0.2},
+            -1: {-1: 0.6, 0: 0.3, 1: 0.1},
             0: {-1: 0.0, 0: 0.0, 1: 0.0},
-            1: {-1: 0.2, 0: 0.3, 1: 0.5},
+            1: {-1: 0.1, 0: 0.3, 1: 0.6},
         }
 
         # will store a history
-        self.state_history = [self.states]
-        self.transmission_history = [np.zeros((N,N))]
+        self.state_history = []
+        self.transmission_history = []
+        self.edge_weight_history = []
 
     def set_transmission_probs(self, transmission_dict):
         """ sets a new probability dict for transmission_dict """
@@ -48,6 +49,7 @@ class Experiment:
         random = np.random.rand(N, N)
         new_states = np.zeros(N)
         transmission_matrix = np.zeros((N,N))
+        edge_weight_matrix = np.zeros((N,N))
 
         for i in range(N):
             for j in range(N):
@@ -55,30 +57,36 @@ class Experiment:
                 j_update = self.states[i]
                 j_same = self.states[j]
 
-                if random[i][j] < prob_new_state:
+                if random[i][j] > prob_new_state:
                     transmission_matrix[i][j] = j_update
                 else:
                     transmission_matrix[i][j] = j_same
 
+                edge_weight_matrix[i][j] = prob_new_state
+        print(transmission_matrix)
         for j in range(N):
             identity = sum(transmission_matrix[:][j])
             if identity > 0:
+                print("change")
                 new_states[j] = 1
             elif identity < 0:
+                print("change")
                 new_states[j] = -1
             else:
                 new_states[j] = 0
 
-        return new_states, transmission_matrix
+        print(new_states)
+        return new_states, transmission_matrix, edge_weight_matrix
 
     def run(self, steps):
-        for i in range(steps - 1):
-            new_states, transmission_matrix = self.update()
+        for i in range(steps):
+            new_states, transmission_matrix, edge_weight_matrix = self.update()
 
-            self.state_history.append(new_states)
+            self.state_history.append(self.states)
             self.transmission_history.append(transmission_matrix)
-            self.states = new_states
-        return self.state_history, self.transmission_history
+            self.edge_weight_history.append(edge_weight_matrix)
+            self.states = new_states.copy()
+        return self.state_history, self.transmission_history, self.edge_weight_history
 
     def get_hist(self, steps):
         trans_hist = self.run(steps)[1]
@@ -88,9 +96,5 @@ class Experiment:
         return df.initialize_matrix(self.edges)
 
 
-
-
-
-experiment = Experiment(100)
-print(experiment.agents)
-print(experiment.run(10)[0])
+experiment = Experiment(10)
+print(experiment.run(1)[0])
