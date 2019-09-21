@@ -21,18 +21,18 @@ prob_dict = {
 }
 
 
-def update(n_state, n_bias):
+def update(node_state, node_bias):
     """ Returns state at next time step """
     random = np.random.rand(N, N)
 
     for i in range(N):
         for j in range(N):
-            prob_new_state = prob_dict[n_bias[i]][n_state[j]]
-            j_update = n_state[i]
-            j_same = n_state[j]
+            prob_new_state = prob_dict[node_bias[i]][node_state[j]]
+            j_update = node_state[i]
+            j_same = node_state[j]
 
             # Make update if by random
-            n_state[j] = j_update if random[i][j] < prob_new_state else j_same
+            node_state[j] = j_update if random[i][j] < prob_new_state else j_same
 
 
 print(f'Initial State: {node_state}')
