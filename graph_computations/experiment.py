@@ -3,6 +3,7 @@ import api.data_transfer as df
 import networkx as nx
 import numpy as np
 import copy
+import json
 
 
 class Experiment:
@@ -93,7 +94,9 @@ class Experiment:
         return trans_hist
 
     def get_initial(self):
-        return df.initialize_matrix(self.edges)
+        nodes, edges = df.initialize_matrix(self.edges)
+        graph_dict = {"nodes": nodes, "edges" : edges}
+        return json.dumps(graph_dict)
 
 
 experiment = Experiment(10)

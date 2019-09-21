@@ -1,5 +1,11 @@
-initialize = function(elements) {
-    var cy = cytoscape({
+var cy;
+test = function(){
+    console.log("test")
+}
+initialize = function(func_elements) {
+    console.log(func_elements);
+    console.log("in here");
+    cy = cytoscape({
       container: document.getElementById('cy'),
 
       boxSelectionEnabled: false,
@@ -41,7 +47,7 @@ initialize = function(elements) {
                 'transition-duration': '0.5s'
           }),
 
-      elements: elements,
+      elements: func_elements,
 
       layout: {
         name: 'breadthfirst',
@@ -130,4 +136,4 @@ var nextHighlight = function(){
 
 
 // Kick off first highlight
-nextHighlight();
+//nextHighlight();
