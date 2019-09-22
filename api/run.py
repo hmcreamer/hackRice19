@@ -14,10 +14,12 @@ def index():
 
 @app.route('/test')
 def start_exp():
-    experiment = Experiment(10)
+    experiment = Experiment(20)
     initial = experiment.get_initial()
-    print(initial)
-    return render_template('test.html', graph=initial)
+    hist = experiment.get_hist(2)
+    print(hist)
+    # print(initial)
+    return render_template('test.html', graph=initial, history = hist)
 
 def run_exp(experiment):
     trans_hist = experiment.to_api(10)
@@ -28,14 +30,13 @@ def initialize_matrix(matrix):
     nodes = []
     edges = []
     n = matrix.shape
-    print(matrix.shape[0])
     for i in range(matrix.shape[0]):
         id_entry = {"id" : i}
         nodes.append({"data" : id_entry})
         for j in range(matrix.shape[1]):
             if matrix[i][j] == 1:
                 edge_entry = {}
-                edge_entry["id"] = str(i) + str(j)
+                edge_entry["id"] = str(i) +  ',' + str(j)
                 edge_entry["source"] = str(i)
                 edge_entry["target"] = str(j)
                 edges.append({"data" : edge_entry})
@@ -134,11 +135,11 @@ class Experiment:
                     transmission_matrix[i][j] = j_same
 
                 edge_weight_matrix[i][j] = prob_new_state
-        print(transmission_matrix)
+        # print(transmission_matrix)
         for j in range(N):
             # nodes wont send to themselves
             identity = sum(transmission_matrix[:,j])
-            print(j, identity)
+            # print(j, identity)
             if identity > 0:
 
                 new_states[j] = 1
@@ -146,7 +147,7 @@ class Experiment:
 
                 new_states[j] = -1
 
-        print("new_states", new_states)
+        # print("new_states", new_states)
         return new_states, transmission_matrix, edge_weight_matrix
 
     def run(self, steps):
@@ -171,7 +172,5 @@ class Experiment:
             json.dump(graph_dict, json_file)
         return json.dumps(graph_dict)
 
-experiment = Experiment(10)
-print(experiment.states)
-print(experiment.run(2)[0])
+experiment = Experiment(100)
 #experiment.get_hist()

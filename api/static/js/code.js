@@ -1,7 +1,10 @@
 var cy;
+var tick_edges;
+
 test = function(){
     console.log("test")
 }
+
 initialize = function(func_elements) {
     console.log(func_elements);
     console.log("in here");
@@ -56,6 +59,13 @@ initialize = function(func_elements) {
         padding: 5
       }
     });
+
+tick_function = function(hist) {
+    console.log("in tick");
+    tick_edges = hist;
+    console.log(tick_edges);
+    nextHighlight();
+}
 
 //    var layout = cy.layout({
 //    name: 'random'});
@@ -115,7 +125,7 @@ initialize = function(func_elements) {
   stop: undefined, // callback on layoutstop
   transform: function (node, position ){ return position; } // transform a given node position. Useful for changing flow direction in discrete layouts
   };
-  var layout = cy.layout( options );
+  var layout = cy.layout(options);
   layout.run();
 
 }
@@ -159,26 +169,26 @@ function unHighlightTick(i) {
 // Holds the current tick
 var i = 0;
 
-var tick_edges = [
-  [
-    ["ae", "red"],
-    ["ab", "blue"],
-  ],
-  [
-    ["bc", "red"],
-    ["be", "blue"],
-    ["ec", "red"],
-  ],
-  [
-    ["cd", "red"],
-  ],
-  [
-    ["di", "red"],
-    ["dj", "red"],
-    ["dg", "red"],
-    ["dh", "red"],
-  ],
-]
+//var tick_edges = [
+//  [
+//    ["ae", "red"],
+//    ["ab", "blue"],
+//  ],
+//  [
+//    ["bc", "red"],
+//    ["be", "blue"],
+//    ["ec", "red"],
+//  ],
+//  [
+//    ["cd", "red"],
+//  ],
+//  [
+//    ["di", "red"],
+//    ["dj", "red"],
+//    ["dg", "red"],
+//    ["dh", "red"],
+//  ],
+//]
 
 // Performs highlights at each tick
 var nextHighlight = function(){
@@ -198,4 +208,3 @@ var nextHighlight = function(){
 
 
 // Kick off first highlight
-//nextHighlight();

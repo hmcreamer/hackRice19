@@ -17,6 +17,8 @@
         console.log(JSON.parse({{ graph | tojson | safe}}));
         var g = JSON.parse({{ graph | tojson | safe}})
         initialize(g);
+        var hist = JSON.parse({{ history | tojson | safe}})
+        tick_function(history)
     </script>
 </body>
 </html>

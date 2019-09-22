@@ -34,7 +34,7 @@ def send_data_for_tick(matrix):
             elif matrix[i][j] == -1:
                 key = str(i) + str(j)
                 new_path.append([key, "blue"])
-    return json.dumps(new_path)
+    return new_path
 
 def process_list_tick_matrices(list):
     all_paths = [send_data_for_tick(matrix) for matrix in list]
@@ -150,7 +150,7 @@ class Experiment:
             json.dump(graph_dict, json_file)
         return json.dumps(graph_dict)
 
-experiment = Experiment(10)
+experiment = Experiment(100)
 print(experiment.states)
 print(experiment.run(2)[0])
 experiment.get_hist()
