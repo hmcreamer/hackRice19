@@ -17,11 +17,12 @@ def index():
 def start_exp():
     experiment = Experiment(20)
     initial = experiment.get_initial()
-    hist = experiment.get_hist(10)
+    hist, statehist = experiment.get_hist(10)
+    statehistjson = json.dumps(statehist)
     print(hist)
     # print(initial)
     all_agents = json.dumps(experiment.agents.tolist())
-    return render_template('test.html', graph=initial, history = hist, agents=all_agents)
+    return render_template('test.html', graph=initial, history = hist, agents=all_agents, statehistory = statehistjson)
 
 def run_exp(experiment):
     trans_hist = experiment.to_api(10)
@@ -152,15 +153,15 @@ class Experiment:
         for i in range(steps):
             new_states, transmission_matrix, edge_weight_matrix = self.update()
 
-            self.state_history.append(self.states)
+            self.state_history.append(self.states.tolist())
             self.transmission_history.append(transmission_matrix)
             self.edge_weight_history.append(edge_weight_matrix)
             self.states = new_states.copy()
         return self.state_history, self.transmission_history, self.edge_weight_history
 
     def get_hist(self, steps):
-        trans_hist = self.run(steps)[1]
-        return process_list_tick_matrices(trans_hist)
+        state_hist, trans_hist, edge_weight_hist = self.run(steps)
+        return process_list_tick_matrices(trans_hist), state_hist
 
     def get_initial(self):
         nodes, edges = initialize_matrix(self.edges)

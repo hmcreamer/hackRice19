@@ -132,7 +132,7 @@ class Experiment:
         for i in range(steps):
             new_states, transmission_matrix, edge_weight_matrix = self.update()
 
-            self.state_history.append(self.states)
+            self.state_history.append(self.states.tolist())
             self.transmission_history.append(transmission_matrix)
             self.edge_weight_history.append(edge_weight_matrix)
             self.states = new_states.copy()

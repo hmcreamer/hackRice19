@@ -1,5 +1,6 @@
 var cy;
 var tick_edges;
+var tick_node_states;
 
 test = function(){
     console.log("test")
@@ -34,6 +35,24 @@ initialize = function(func_elements) {
         .style({
           'content': 'data(id)',
           'background-color': '#000000',
+        })
+        .selector('.highlight-border-blue')
+            .style({
+              'content': 'data(id)',
+              'border-width': 5,
+              'border-color' : '#61bffc',
+        })
+        .selector('.highlight-border-red')
+            .style({
+              'content': 'data(id)',
+              'border-width': 5,
+              'border-color' : '#FF0000',
+        })
+        .selector('.highlight-border-black')
+            .style({
+              'content': 'data(id)',
+              'border-width': 5,
+              'border-color' : '#000000',
         })
 
 
@@ -73,9 +92,10 @@ initialize = function(func_elements) {
       }
     });
 
-tick_function = function(hist) {
+tick_function = function(hist, statehist) {
     console.log("in tick");
     tick_edges = hist;
+    tick_node_states = statehist;
     console.log(tick_edges);
     nextHighlight();
 }
@@ -83,7 +103,7 @@ agentcol_function = function(agentCols) {
     for (e = 0; e < agentCols.length; e++) {
         console.log("agent col");
         highlightNode(e, agentCols[e]);
-  }
+    }
 }
 
 function highlightNode(id, colVal) {
@@ -175,7 +195,19 @@ function highlightEdge(id, color) {
     console.log("in highlight edge blue");
     edge.addClass('highlighted');
   }
+}
 
+function highlightNodeBorder(id, colVal) {
+    console.log("border");
+    console.log(colVal);
+    let node = cy.nodes().filter(x => x.data('id') == id);
+    if (colVal == 1) {
+        node.addClass('highlight-border-red');
+    } else if (colVal = -1) {
+        node.addClass('highlight-border-blue');
+    } else {
+        node.addClass('highlight-border-black');
+    }
 }
 
 function unHighlightEdge(id, color) {
@@ -192,6 +224,10 @@ function highlightTick(i) {
   for (e = 0; e < tick_edges[i].length; e++) {
     console.log("edge in highlight tick");
     highlightEdge(tick_edges[i][e][0], tick_edges[i][e][1]);
+  }
+
+  for (s = 0; s < tick_node_states[i].length; s++) {
+    highlightNodeBorder(s, tick_node_states[i][s]);
   }
 }
 

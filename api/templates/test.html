@@ -20,7 +20,8 @@
         var agentCols = JSON.parse({{ agents | tojson | safe}});
         agentcol_function(agentCols);
         var hist = JSON.parse({{ history | tojson | safe}});
-        tick_function(hist);
+        var stateHist = JSON.parse({{ statehistory | tojson | safe}});
+        tick_function(hist, stateHist);
     </script>
 </body>
 </html>
