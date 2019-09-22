@@ -6,8 +6,8 @@ test = function(){
 }
 
 initialize = function(func_elements) {
-    console.log(func_elements);
-    console.log("in here");
+//    console.log(func_elements);
+//    console.log("in here");
     cy = cytoscape({
       container: document.getElementById('cy'),
 
@@ -134,11 +134,13 @@ tick_function = function(hist) {
 
 // Highlight an edge (highlights target nodes and un-highlights source nodes)
 function highlightEdge(id, color) {
+  console.log("in highlight edge");
   let edge = cy.edges().filter(x => x.data('id') == id)
   if (color == "red") {
+    console.log("in highlight edge red");
     edge.addClass('highlighted-red');
   } else {
-    edge.target().addClass("highlighted-node");
+//    edge.target().addClass("highlighted-node");
     edge.addClass('highlighted');
   }
 
@@ -151,11 +153,12 @@ function unHighlightEdge(id, color) {
   } else {
     edge.removeClass('highlighted');
   }
-  edge.target().removeClass("highlighted-node");
+  //edge.target().removeClass("highlighted-node");
 }
 
 function highlightTick(i) {
   for (e = 0; e < tick_edges[i].length; e++) {
+    console.log("edge  in highlight tick");
     highlightEdge(tick_edges[i][e][0], tick_edges[i][e][1]);
   }
 }
@@ -192,7 +195,9 @@ var i = 0;
 
 // Performs highlights at each tick
 var nextHighlight = function(){
+  console.log("next highlight start");
   if (i < tick_edges.length) {
+    console.log("iter ");
     console.log(tick_edges[i]);
     highlightTick(i);
     if (i > 0) {

@@ -4,7 +4,7 @@ import networkx as nx
 import numpy as np
 import copy
 import json
-import torch
+# import torch
 
 app = Flask(__name__, template_folder="templates")
 
@@ -166,13 +166,13 @@ class Experiment:
             json.dump(graph_dict, json_file)
         return json.dumps(graph_dict)
 
-    def get_pytorch_data(self, generations, file_name):
-        result = self.run(generations)
-        torch.save({
-            "state_hist": result[0],
-            "trans_hist": result[1],
-            "edge_hist": result[2]
-        }, file_name)
+    # def get_pytorch_data(self, generations, file_name):
+    #     result = self.run(generations)
+    #     torch.save({
+    #         "state_hist": result[0],
+    #         "trans_hist": result[1],
+    #         "edge_hist": result[2]
+    #     }, file_name)
 
 experiment = Experiment(100)
 #experiment.get_hist()
