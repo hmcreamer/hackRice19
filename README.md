@@ -16,6 +16,10 @@ Then import the library in your python project by:
 
 `import dynaml_lib`
 
+or access the experiment class with:
+
+`from dynaml_lib.experiment import Experiment`
+
 ## Analyzing Social Networks via Graph Neural Networks (GNNs) - An example of research using our network simulation toolkit
 
 With DynaML, we take the stance that the social relationships between users are a necessary component to understanding the spread of information in dynamic social networks. To model these relationships, we build out detailed graph representations as described above. But once we have these simulations, the question becomes: *can we make meaningful inferences on this data*?
