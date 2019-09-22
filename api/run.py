@@ -11,10 +11,11 @@ app = Flask(__name__, template_folder="templates")
 
 @app.route('/')
 def index():
-    return render_template('index.html', message="Here is a message")
+    return render_template('index.html', message="Please route to /simulate to see our simulated environment")
 
-@app.route('/test')
+@app.route('/simulate')
 def start_exp():
+    """ The endpoint that we hit from our webapp in order to create our simulated environment"""
     experiment = Experiment(25)
     initial = experiment.get_initial()
     hist, statehist = experiment.get_hist(25)
@@ -25,11 +26,13 @@ def start_exp():
     return render_template('test.html', graph=initial, history = hist, agents=all_agents, statehistory = statehistjson)
 
 def run_exp(experiment):
+    """ Helper function for running our experiment """
     trans_hist = experiment.to_api(10)
     #redirect user to new templste with completed experiment data
 
 
 def initialize_matrix(matrix):
+    """ Initializes our matrix to a format that can be read by the front end"""
     nodes = []
     edges = []
     n = matrix.shape
@@ -49,11 +52,10 @@ def initialize_matrix(matrix):
     return nodes, edges
 
 
-"""
-If the value is 1, then the color will be changed to red. If the value is -1, the color will be changed to blue
-"""
 def send_data_for_tick(matrix):
+    """ Converts our data on the edges to a format that can interpreted by the front end """
     new_path = []
+    # If the value is 1, then the color will be changed to red. If the value is -1, the color will be changed to blue
     for i in range(matrix.shape[0]):
         for j in range(matrix.shape[1]):
             if matrix[i][j] == 1:
@@ -65,6 +67,7 @@ def send_data_for_tick(matrix):
     return new_path
 
 def process_list_tick_matrices(list):
+    """ Converts our data on the changes in the state matrices to a format that can interpreted by the front end """
     all_paths = [send_data_for_tick(matrix) for matrix in list]
     file_path = "../api/tickdata.json"
     with open(file_path, "w") as json_file:
@@ -72,6 +75,7 @@ def process_list_tick_matrices(list):
     return json.dumps(all_paths)
 
 def send_node_change_data(nodes):
+    """ Converts our data on the nodes to a format that can interpreted by the front end """
     node_colors = []
     for node in nodes:
         if node == 1:
@@ -82,7 +86,14 @@ def send_node_change_data(nodes):
             node_colors.append("black")
     return node_colors
 
+""" 
+A class for an experiment within our simulated social network environment.
 
+Arguments:
+     N (int): the number of nodes in the graph
+     agent_probs: list of probabilities for each agent type
+
+"""
 class Experiment:
     def __init__(self, N,
                  agent_probs=(.1, .8, .1),
@@ -150,6 +161,9 @@ class Experiment:
         return new_states, transmission_matrix, edge_weight_matrix
 
     def run(self, steps):
+        """ Runs a simulation of the interaction of the nodes in the social network we have created. This simulation is
+            run 'steps' number of times
+         """
         for i in range(steps):
             new_states, transmission_matrix, edge_weight_matrix = self.update()
 
@@ -160,10 +174,12 @@ class Experiment:
         return self.state_history, self.transmission_history, self.edge_weight_history
 
     def get_hist(self, steps):
+        """ Returns the history of the states, edges, and edge weights of our network """
         state_hist, trans_hist, edge_weight_hist = self.run(steps)
         return process_list_tick_matrices(trans_hist), state_hist
 
     def get_initial(self):
+        """ Returns the initial states and edges of our network """
         nodes, edges = initialize_matrix(self.edges)
         graph_dict = {'nodes': nodes, 'edges': edges}
         file_path = "../api/data.json"
