@@ -15,9 +15,9 @@ def index():
 
 @app.route('/test')
 def start_exp():
-    experiment = Experiment(5)
+    experiment = Experiment(10)
     initial = experiment.get_initial()
-    hist = experiment.get_hist(2)
+    hist = experiment.get_hist(10)
     print(hist)
     # print(initial)
     return render_template('test.html', graph=initial, history = hist)
@@ -37,10 +37,13 @@ def initialize_matrix(matrix):
         for j in range(matrix.shape[1]):
             if matrix[i][j] == 1:
                 edge_entry = {}
-                edge_entry["id"] = str(i) +  ',' + str(j)
+                edge_entry["id"] = str(i) + str(j)
+                edge_entry["weight"] = 1
                 edge_entry["source"] = str(i)
                 edge_entry["target"] = str(j)
                 edges.append({"data" : edge_entry})
+    print("edges")
+    print(edges)
     return nodes, edges
 
 
@@ -164,6 +167,9 @@ class Experiment:
         file_path = "../api/data.json"
         with open(file_path, "w") as json_file:
             json.dump(graph_dict, json_file)
+
+        print("graph dict")
+        print(graph_dict)
         return json.dumps(graph_dict)
 
     # def get_pytorch_data(self, generations, file_name):

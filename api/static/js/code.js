@@ -141,6 +141,7 @@ function highlightEdge(id, color) {
     edge.addClass('highlighted-red');
   } else {
 //    edge.target().addClass("highlighted-node");
+    console.log("in highlight edge blue");
     edge.addClass('highlighted');
   }
 
