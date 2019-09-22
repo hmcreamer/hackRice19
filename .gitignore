@@ -1,3 +1,7 @@
+# Saved data
+*.pth
+*.pt
+
 # PyCharm
 .idea/
 
