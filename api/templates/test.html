@@ -17,8 +17,10 @@
         console.log(JSON.parse({{ graph | tojson | safe}}));
         var g = JSON.parse({{ graph | tojson | safe}})
         initialize(g);
-        var hist = JSON.parse({{ history | tojson | safe}})
-        tick_function(hist)
+        var agentCols = JSON.parse({{ agents | tojson | safe}});
+        agentcol_function(agentCols);
+        var hist = JSON.parse({{ history | tojson | safe}});
+        tick_function(hist);
     </script>
 </body>
 </html>

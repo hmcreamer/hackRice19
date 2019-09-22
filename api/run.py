@@ -20,7 +20,8 @@ def start_exp():
     hist = experiment.get_hist(10)
     print(hist)
     # print(initial)
-    return render_template('test.html', graph=initial, history = hist)
+    all_agents = json.dumps(experiment.agents.tolist())
+    return render_template('test.html', graph=initial, history = hist, agents=all_agents)
 
 def run_exp(experiment):
     trans_hist = experiment.to_api(10)
