@@ -10,7 +10,7 @@ We created a data science tooling system that enables researchers to understand 
 
 You can pip install our library via the following pip command:
 
-`pip install dynaml-lib-ddehueck`
+`pip install dynaml-lib`
 
 Then import the library in your python project by:
 
