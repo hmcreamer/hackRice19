@@ -2,6 +2,7 @@ import torch
 import numpy as np
 from torch_geometric.data import Data, DataLoader, NeighborSampler
 
+
 def get_loader():
     # Load data made with API's run experiment methods
     saved_data = torch.load('./data/1k_50_data.pth')
@@ -25,7 +26,7 @@ def get_loader():
         for j, col in enumerate(row):
             x[j][i] = state_hist[i][j]
 
-    x += 1
+    x += 2 # Shift dist to avoid errors
     x = torch.tensor(x, dtype=torch.float)
     print(f'nodes x steps: {x.shape}')
 
@@ -68,17 +69,18 @@ def get_loader():
     ]
     """
     agents = (np.array(agents) == -1) * 1
-    y = torch.tensor(agents)#, dtype=torch.float)
+
+    y = torch.tensor(agents)
     print(f'y Shape: {y.shape}')
 
-
+    # Add into pytorch geometric's Data class
     data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=y)
     data.train_mask = torch.Tensor(x.shape[0]).uniform_() < 0.8
     data.test_mask = torch.tensor(1 - data.train_mask.numpy(), dtype=torch.uint8)
     data.train_mask = torch.tensor(1 - data.test_mask.numpy(), dtype=torch.uint8)
 
     loader = NeighborSampler(data, size=0.6, num_hops=2, batch_size=32, shuffle=True, add_self_loops=True)
-    return data, loader
+    return loader, data
 
 if __name__ == '__main__':
     get_loader()
