@@ -14,7 +14,7 @@ def index():
 
 @app.route('/test')
 def start_exp():
-    experiment = Experiment(20)
+    experiment = Experiment(5)
     initial = experiment.get_initial()
     hist = experiment.get_hist(2)
     print(hist)
@@ -52,11 +52,11 @@ def send_data_for_tick(matrix):
         for j in range(matrix.shape[1]):
             if matrix[i][j] == 1:
                 key = str(i) + str(j)
-                new_path.append({key : "red"})
+                new_path.append([key, "red"])
             elif matrix[i][j] == -1:
                 key = str(i) + str(j)
                 new_path.append([key, "blue"])
-    return json.dumps(new_path)
+    return new_path
 
 def process_list_tick_matrices(list):
     all_paths = [send_data_for_tick(matrix) for matrix in list]
