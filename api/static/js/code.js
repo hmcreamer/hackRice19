@@ -23,7 +23,7 @@ initialize = function(func_elements) {
         .selector('.highlighted-node-blue')
         .style({
           'content': 'data(id)',
-          'background-color': '#61bffc',
+          'background-color': '#0800fa',
         })
 
         .selector('.highlighted-node-red')
@@ -46,13 +46,13 @@ initialize = function(func_elements) {
             .style({
               'content': 'data(id)',
               'border-width': 5,
-              'border-color' : '#FF0000',
+              'border-color' : '#ff5145',
         })
         .selector('.highlight-border-black')
             .style({
               'content': 'data(id)',
               'border-width': 5,
-              'border-color' : '#000000',
+              'border-color' : '#595757',
         })
 
       .selector('edge')
@@ -65,9 +65,9 @@ initialize = function(func_elements) {
           })
         .selector('.highlighted')
           .style({
-            'background-color': '#61bffc',
-            'line-color': '#61bffc',
-            'target-arrow-color': '#61bffc',
+            'background-color': '#0800fa',
+            'line-color': '#0800fa',
+            'target-arrow-color': '#0800fa',
             'transition-property': 'background-color, line-color, target-arrow-color',
             'transition-duration': '0.5s'
           })
