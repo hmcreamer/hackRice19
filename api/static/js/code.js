@@ -55,7 +55,6 @@ initialize = function(func_elements) {
               'border-color' : '#000000',
         })
 
-
       .selector('edge')
           .style({
             'curve-style': 'bezier',
@@ -203,10 +202,23 @@ function highlightNodeBorder(id, colVal) {
     let node = cy.nodes().filter(x => x.data('id') == id);
     if (colVal == 1) {
         node.addClass('highlight-border-red');
-    } else if (colVal = -1) {
+    } else if (colVal == -1) {
         node.addClass('highlight-border-blue');
     } else {
         node.addClass('highlight-border-black');
+    }
+}
+
+function unhighlightNodeBorder(id, colVal) {
+    console.log("border");
+    console.log(colVal);
+    let node = cy.nodes().filter(x => x.data('id') == id);
+    if (colVal == 1) {
+        node.removeClass('highlight-border-red');
+    } else if (colVal == -1) {
+        node.removeClass('highlight-border-blue');
+    } else {
+        node.removeClass('highlight-border-black');
     }
 }
 
@@ -234,6 +246,10 @@ function highlightTick(i) {
 function unHighlightTick(i) {
   for (e = 0; e < tick_edges[i].length; e++) {
     unHighlightEdge(tick_edges[i][e][0], tick_edges[i][e][1]);
+  }
+
+  for (s = 0; s < tick_node_states[i].length; s++) {
+    unhighlightNodeBorder(s, tick_node_states[i][s]);
   }
 }
 
