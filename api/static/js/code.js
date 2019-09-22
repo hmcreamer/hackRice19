@@ -19,11 +19,24 @@ initialize = function(func_elements) {
         .style({
           'content': 'data(id)'
         })
-        .selector('.highlighted-node')
+        .selector('.highlighted-node-blue')
         .style({
           'content': 'data(id)',
           'background-color': '#61bffc',
         })
+
+        .selector('.highlighted-node-red')
+        .style({
+          'content': 'data(id)',
+          'background-color': '#FF0000',
+        })
+        .selector('.highlighted-node-black')
+        .style({
+          'content': 'data(id)',
+          'background-color': '#000000',
+        })
+
+
       .selector('edge')
           .style({
             'curve-style': 'bezier',
@@ -65,6 +78,23 @@ tick_function = function(hist) {
     tick_edges = hist;
     console.log(tick_edges);
     nextHighlight();
+}
+agentcol_function = function(agentCols) {
+    for (e = 0; e < agentCols.length; e++) {
+        console.log("agent col");
+        highlightNode(e, agentCols[e]);
+  }
+}
+
+function highlightNode(id, colVal) {
+    let node = cy.nodes().filter(x => x.data('id') == id);
+    if (colVal == 1) {
+        node.addClass('highlighted-node-red');
+    } else if (colVal == -1) {
+        node.addClass('highlighted-node-blue');
+    } else {
+        node.addClass('highlighted-node-black');
+    }
 }
 
 //    var layout = cy.layout({
@@ -160,7 +190,7 @@ function unHighlightEdge(id, color) {
 
 function highlightTick(i) {
   for (e = 0; e < tick_edges[i].length; e++) {
-    console.log("edge  in highlight tick");
+    console.log("edge in highlight tick");
     highlightEdge(tick_edges[i][e][0], tick_edges[i][e][1]);
   }
 }
@@ -201,13 +231,14 @@ var nextHighlight = function(){
   if (i < tick_edges.length) {
     console.log("iter ");
     console.log(tick_edges[i]);
-    highlightTick(i);
     if (i > 0) {
       unHighlightTick(i - 1);
     }
+    highlightTick(i);
+
     i++;
     // Kick off next highlight
-    setTimeout(nextHighlight, 2000);
+    setTimeout(nextHighlight, 3000);
   } else {
     unHighlightTick(tick_edges.length - 1);
   }
