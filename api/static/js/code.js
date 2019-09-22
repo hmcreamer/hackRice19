@@ -135,6 +135,7 @@ tick_function = function(hist) {
 // Highlight an edge (highlights target nodes and un-highlights source nodes)
 function highlightEdge(id, color) {
   console.log("in highlight edge");
+  console.log(id);
   let edge = cy.edges().filter(x => x.data('id') == id)
   if (color == "red") {
     console.log("in highlight edge red");
@@ -206,7 +207,7 @@ var nextHighlight = function(){
     }
     i++;
     // Kick off next highlight
-    setTimeout(nextHighlight, 1000);
+    setTimeout(nextHighlight, 2000);
   } else {
     unHighlightTick(tick_edges.length - 1);
   }
