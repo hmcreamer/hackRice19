@@ -39,7 +39,7 @@ def initialize_matrix(matrix):
                 edge_entry["source"] = str(i)
                 edge_entry["target"] = str(j)
                 edges.append({"data" : edge_entry})
-    return json.dumps(nodes), json.dumps(edges)
+    return nodes, edges
 
 
 """
