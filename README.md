@@ -1,4 +1,4 @@
-# DynaML - A research toolkit for understanding how misinformation flows through a social network usnig a dynamic system simulation and graph neural networks
+# DynaML - A research toolkit for understanding how misinformation flows through a social network using a dynamic system simulation and graph neural networks
 
 ## Inspiration
 Understanding the spread of information and particularly disinformation is vital to today's world. Data on the spread of competing narratives by bot agents is difficult to gather at scale over extended periods. We provide a simulation tool kit that enables researchers to understand this problem by model the interaction of bot agents competing to spread different narratives to a broader community.
