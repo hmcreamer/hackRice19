@@ -15,9 +15,9 @@ def index():
 
 @app.route('/test')
 def start_exp():
-    experiment = Experiment(20)
+    experiment = Experiment(25)
     initial = experiment.get_initial()
-    hist, statehist = experiment.get_hist(10)
+    hist, statehist = experiment.get_hist(25)
     statehistjson = json.dumps(statehist)
     print(hist)
     # print(initial)
@@ -108,9 +108,9 @@ class Experiment:
 
         # state then agent type
         self.transmission_probs = {
-            -1: {-1: 0.9, 0: 0.5, 1: 0.1},
+            -1: {-1: 0.9, 0: 0.35, 1: 0.1},
             0: {-1: 0.0, 0: 0.0, 1: 0.0},
-            1: {-1: 0.1, 0: 0.5, 1: 0.9},
+            1: {-1: 0.1, 0: 0.35, 1: 0.9},
         }
 
         # will store a history
