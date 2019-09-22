@@ -6,6 +6,16 @@ Understanding the spread of information and particularly disinformation is vital
 ## Simulating Social Networks as Dynamic Systems
 We created a data science tooling system that enables researchers to understand social networks better. In the initial step of our simulation, we create randomized graphs that are similar in edge distributions to real-world social networks. Then for each of the nodes in the graph, we assign an agent type (non-bot neutral, bot promoting idea A, bot promoting idea B). We initialize the spread of information through the graph by beginning with the bots as the only ones trying to spread their respective ideas. Then at each time step we use, the edges of the graph, the identity of the agent, and the current held the belief of each agent to determine a percent chance that information is spread to a new agent. We keep track of the history of all of the information in the network to create our simulated data set. To visualize this complex system of interactions we created an animated assistant that shows off all of the information of the graph. Each node has an identity denoted by its inner darker color, the current idea that the node is spreading is shown by the outer lighter color, and the active connections in the graph are colored edges.
 
+### Installing via PyPI
+
+You can pip install our library via the following pip command:
+
+`pip install dynaml-lib-ddehueck`
+
+Then import the library in your python project by:
+
+`import dynaml_lib`
+
 ## Analyzing Social Networks via Graph Neural Networks (GNNs) - An example of research using our network simulation toolkit
 
 With DynaML, we take the stance that the social relationships between users are a necessary component to understanding the spread of information in dynamic social networks. To model these relationships, we build out detailed graph representations as described above. But once we have these simulations, the question becomes: *can we make meaningful inferences on this data*?
